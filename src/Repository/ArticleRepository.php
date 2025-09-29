@@ -1,0 +1,40 @@
+<?php
+namespace App\Repository;
+
+use ORM\Entity\Article;
+use Doctrine\ORM\EntityManager;
+
+class ArticleRepository extends EntityRepository {
+
+    /**
+     * Find recent articles by creation date
+     */
+    public function findRecentArticles(int $limit=5) : array {
+        return $this->createQueryBuilder('a')
+               ->orderBy('a.createdAt' , 'DESC')
+               ->setMaxResult($limit)
+               ->getQuery()
+               ->getResult();
+    }
+
+    /**
+     * Find articles by category
+     */
+    public function findByCategory(string $categoryName) : array {
+
+        return $this->createQueryBuilder('a')
+               ->join('a.categories' , 'c')
+               ->where('c.categoryName = :name' )
+               ->setParameter('name' , $categoryName)
+               ->getQuery()
+               ->getResult();
+    }
+
+    /**
+     * Find article by ID
+     */
+    public function findById(int $id) : ?Article {
+        return $this->findById($id);
+    }
+
+}
