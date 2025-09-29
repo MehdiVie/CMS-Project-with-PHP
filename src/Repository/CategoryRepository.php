@@ -9,10 +9,10 @@ class CategoryRepository extends EntityRepository
     /**
      * Find category by name
      */
-    public function findByName(string $name): ?Category
+    public function findOneByName(string $name): ?Category
     {
         return $this->createQueryBuilder('c')
-            ->where('c.name = :name')
+            ->where('c.categoryName = :name')
             ->setParameter('name', $name)
             ->getQuery()
             ->getOneOrNullResult();
@@ -24,7 +24,7 @@ class CategoryRepository extends EntityRepository
     public function findAllOrdered(): array
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.categoryName', 'ASC')
             ->getQuery()
             ->getResult();
     }

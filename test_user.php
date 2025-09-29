@@ -7,20 +7,20 @@ use App\Service\UserService;
 // $entityManager 
 $userService = new UserService($entityManager);
 
-// 1. Create new user
-$newUser = $userService->createUser("Alice", "alice@example.com", "secret123");
-echo "✅ User created with ID: " . $newUser->getId() . PHP_EOL;
+// Create new user
+$newUser = $userService->createUser("Mehdi", "mehdi@example.com", "secret123");
+echo " User created with ID: " . $newUser->getId() . PHP_EOL;
 
-// 2. Find user by email
-$foundUser = $userService->getUserByEmail("alice@example.com");
+// Find user by email
+$foundUser = $userService->getUserByEmail("mehdi@example.com");
 if ($foundUser) {
-    echo "🔎 Found user: " . $foundUser->getName() . " (" . $foundUser->getEmail() . ")" . PHP_EOL;
+    echo " Found user: " . $foundUser->getName() . " (" . $foundUser->getEmail() . ")" . PHP_EOL;
 }
 
-// 3. Get all active users
+// Get all active users
 $activeUsers = $userService->getAllActiveUsers();
-echo "👥 Active Users Count: " . count($activeUsers) . PHP_EOL;
+echo " Active Users Count: " . count($activeUsers) . PHP_EOL;
 
-// 4. Deactivate the user
+// Deactivate the user
 $userService->deactivateUser($foundUser);
-echo "🚫 User deactivated: " . $foundUser->getEmail() . PHP_EOL;
+echo " User deactivated: " . $foundUser->getEmail() . PHP_EOL;

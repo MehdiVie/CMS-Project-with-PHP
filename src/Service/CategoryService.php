@@ -2,15 +2,19 @@
 namespace App\Service;
 
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CategoryService
 {
     private EntityManagerInterface $em;
-    
+    private CategoryRepository $categoryRepository;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
+        // Repository 
+        $this->categoryRepository = $em->getRepository(Category::class);
     }
 
     /**
@@ -25,6 +29,14 @@ class CategoryService
         $this->em->flush();
 
         return $category;
+    }
+
+    /**
+     * Get category by name
+     */
+    public function getCategoryByName(string $categoryName): ?Category
+    {
+        return $this->categoryRepository->findOneByName($categoryName);
     }
 
     /**
@@ -52,6 +64,6 @@ class CategoryService
      */
     public function getAllCategories(): array
     {
-        return $this->em->getRepository(Category::class)->findAll();
+        return $this->categoryRepository->findAllOrdered();
     }
 }

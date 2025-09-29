@@ -2,7 +2,7 @@
 namespace App\Repository;
 
 use ORM\Entity\Article;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 class ArticleRepository extends EntityRepository {
 
@@ -35,6 +35,19 @@ class ArticleRepository extends EntityRepository {
      */
     public function findById(int $id) : ?Article {
         return $this->findById($id);
+    }
+
+
+    /**
+     * Find articles of author id
+     */
+    public function findByAuthor(int $authorId): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.author = :authorId')
+            ->setParameter('authorId', $authorId)
+            ->getQuery()
+            ->getResult();
     }
 
 }

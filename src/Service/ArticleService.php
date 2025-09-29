@@ -12,6 +12,7 @@ class ArticleService  {
 
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
+
     }
 
     /**
@@ -69,6 +70,24 @@ class ArticleService  {
     {
         $this->em->remove($article);
         $this->em->flush();
+    }
+
+    public function getAllArticles() : array {
+
+        return $this->em->getRepository(Article::class)->findAll();
+
+    }
+
+    public function getArticlesByCategory(string $categoryName) : array {
+
+        return $this->em->getRepository(Article::class)->findByCategory($categoryName);
+
+    }
+
+    public function getArticlesByAuthor(User $author): ?array
+    {
+        return $this->em->getRepository(Article::class)->
+                    findByAuthor($author->getId());
     }
 
 }
