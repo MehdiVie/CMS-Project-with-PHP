@@ -19,21 +19,67 @@ class UserService  {
     /**
      * Create a new User
      */
-    public function createUser(string $name, string $email,
+    public function safeCreateUser(string $name, string $email,
                                 string $password) : User {
+        $this->em->beginTransaction();
 
-        $user = new User();
-        $user->setName($name);
-        $user->setEmail($email);
-        $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
-        $user->setIsActive(true);
+        try {
+            $user = new User();
+            $user->setName($name);
+            $user->setEmail($email);
+            $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
+            $user->setIsActive(true);
 
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
+            $this->em->persist($user);
+            $this->em->flush();
+            $this->em->commit();
+            return $user;
+            
+        } catch (\Throwable $e) {
+            $this->em->rollback();
+            return null;
+        }
 
     }
+
+    public function safeUpdateUser(User $user , array $data) : user 
+    {
+        $this->em->beginTransaction();
+        try {
+            if (isset($data["name"])) $user->setName($data["name"]);
+            if (isset($data["email"])) $user->setEmail($data["email"]);
+            if (isset($data["password"])) $user->setPassword(
+                        password_hash($data["password"], PASSWORD_BCRYPT));
+            if (isset($data["isActive"])) $user->setIsActive($data["isActive"]);
+
+            
+            $this->em->flush();
+            $this->em->commit();
+            return $user;
+
+        } catch (\Throwable $e) {
+            $this->em->rollback();
+            return null;
+        }
+
+    }
+
+    public function safeDeleteUser(User $user) : user 
+    {
+        $this->em->beginTransaction();
+        try {
+            $this->em->remove($user);
+            $this->em->flush();
+            $this->em->commit();
+            return $user;
+
+        } catch (\Throwable $e) {
+            $this->em->rollback();
+            return null;
+        }
+
+    }
+
 
     /**
      * get user by Email

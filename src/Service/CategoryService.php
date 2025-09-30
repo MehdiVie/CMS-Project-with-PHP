@@ -20,15 +20,23 @@ class CategoryService
     /**
      * Create new category
      */
-    public function createCategory(string $categoryName): Category
+    public function safeCreateCategory(string $categoryName): Category
     {
-        $category = new Category();
-        $category->setCategoryName($categoryName);
+        $this->em->beginTransaction();
+        try {
+            $category = new Category();
+            $category->setCategoryName($categoryName);
 
-        $this->em->persist($category);
-        $this->em->flush();
+            $this->em->persist($category);
+            $this->em->flush();
+            $this->em->commit();
+            return $category;
 
-        return $category;
+        } catch (\Throwable $e) {
+            $this->em->rollback();
+            return null;
+        }
+        
     }
 
     /**
@@ -42,22 +50,48 @@ class CategoryService
     /**
      * Update category name
      */
-    public function updateCategory(Category $category, string $newName): Category
+    public function safeUpdateCategory(Category $category, string $newName): Category
     {
-        $category->setCategoryName($newName);
-        $this->em->flush();
+        $this->em->beginTransaction();
+        try {
+            $category->setCategoryName($newName);
+            
+            $this->em->flush();
+            $this->em->commit();
+            return $category;
 
-        return $category;
+        }
+        catch(\Throwable $e) {
+
+            $this->em->rollback();
+            return null;
+        }
+
+
+        
     }
 
     /**
      * Delete category
      */
-    public function deleteCategory(Category $category): void
+    public function safeDeleteCategory(Category $category): bool
     {
-        $this->em->remove($category);
-        $this->em->flush();
+        $this->em->beginTransaction();
+        try {
+            $this->em->remove($category);
+
+            $this->em->flush();
+            $this->em->commit();
+            return true;
+        }
+        catch(\Throwable $e) {
+            $this->em->rollback();
+            return false;
+        }
+        
+
     }
+    
 
     /**
      * Get all categories

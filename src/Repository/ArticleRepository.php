@@ -50,4 +50,13 @@ class ArticleRepository extends EntityRepository {
             ->getResult();
     }
 
+    public function findByKeyword(string $keyword) : ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.title like :keyword OR a.content like :keyword')
+            ->setParameter('keyword', '%'.$keyword.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
 }
