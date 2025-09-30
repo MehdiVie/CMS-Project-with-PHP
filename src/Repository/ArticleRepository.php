@@ -1,7 +1,7 @@
 <?php
 namespace App\Repository;
 
-use ORM\Entity\Article;
+use App\Entity\Article;
 use Doctrine\ORM\EntityRepository;
 
 class ArticleRepository extends EntityRepository {
@@ -12,7 +12,7 @@ class ArticleRepository extends EntityRepository {
     public function findRecentArticles(int $limit=5) : array {
         return $this->createQueryBuilder('a')
                ->orderBy('a.createdAt' , 'DESC')
-               ->setMaxResult($limit)
+               ->setMaxResults($limit)
                ->getQuery()
                ->getResult();
     }
@@ -34,7 +34,7 @@ class ArticleRepository extends EntityRepository {
      * Find article by ID
      */
     public function findById(int $id) : ?Article {
-        return $this->findById($id);
+        return $this->find($id);
     }
 
 
