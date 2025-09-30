@@ -20,7 +20,7 @@ class UserService  {
      * Create a new User
      */
     public function safeCreateUser(string $name, string $email,
-                                string $password) : User {
+                                string $password) : ?User {
         $this->em->beginTransaction();
 
         try {
@@ -37,7 +37,7 @@ class UserService  {
             
         } catch (\Throwable $e) {
             $this->em->rollback();
-            return null;
+            throw $e;
         }
 
     }
@@ -64,7 +64,7 @@ class UserService  {
 
     }
 
-    public function safeDeleteUser(User $user) : user 
+    public function safeDeleteUser(User $user) : ?User 
     {
         $this->em->beginTransaction();
         try {
@@ -94,7 +94,7 @@ class UserService  {
         $this->em->flush();
     }
 
-    public function getAllActiveUsers() : array {
+    public function getAllUsers() : array {
         return $this->userRepository->findActiveUsers();
     }
 

@@ -15,7 +15,6 @@ $commentService = new CommentService($entityManager);
 
 echo "=== AUTO SAFE CRUD TEST START ===\n\n";
 
-
 //  Users
 
 echo "\n Users\n";

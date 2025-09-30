@@ -20,7 +20,7 @@ class CategoryService
     /**
      * Create new category
      */
-    public function safeCreateCategory(string $categoryName): Category
+    public function safeCreateCategory(string $categoryName): ?Category
     {
         $this->em->beginTransaction();
         try {

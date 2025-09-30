@@ -124,4 +124,11 @@ class ArticleService  {
                     findByKeyword($keyword);
     }
 
+    public function getArticleByTitle(string $title): array
+    {
+        return $this->articleRepository->
+                    findBy(['title' => $title]);
+    }
+
+
 }
