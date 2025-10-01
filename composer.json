@@ -1,7 +1,9 @@
 {
     "require": {
         "doctrine/orm": "^3.5",
-        "doctrine/annotations": "^2.0"
+        "doctrine/annotations": "^2.0",
+        "symfony/http-foundation": "^7.3",
+        "symfony/http-client": "^7.3"
     },
     "autoload": {
         "psr-4": {

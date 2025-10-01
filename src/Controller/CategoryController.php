@@ -21,13 +21,9 @@ class CategoryController
         return $category;
     }
 
-    public function listAllCategories(): void
+    public function listAllCategories(): array
     {
-        $categories = $this->categoryService->getAllCategories();
-        echo "All categories:\n";
-        foreach ($categories as $c) {
-            echo "- {$c->getCategoryName()}\n";
-        }
+        return $this->categoryService->getAllCategories(); 
     }
 
     public function getCategoryByName(string $name): ?Category

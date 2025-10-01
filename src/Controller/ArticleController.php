@@ -32,12 +32,9 @@ class ArticleController
         return $article;
     }
 
-    public function listAllArticles(): void
+    public function listAllArticles(): array
     {
-        $articles = $this->articleService->getAllArticles();
-        foreach ($articles as $a) {
-            echo "- {$a->getTitle()} by {$a->getAuthor()->getName()}\n";
-        }
+        return $this->articleService->getAllArticles();
     }
 
     // src/Controller/ArticleController.php

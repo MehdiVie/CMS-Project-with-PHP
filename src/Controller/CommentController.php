@@ -32,13 +32,9 @@ class CommentController
         return $comment;
     }
 
-    public function listCommentsByArticle(Article $article): void
+    public function listCommentsByArticle(Article $article): array
     {
-        $comments = $this->commentService->getCommentsByArticle($article);
-        echo "Comments for Article '{$article->getTitle()}':\n";
-        foreach ($comments as $c) {
-            echo "- {$c->getContent()} (by {$c->getAuthor()->getEmail()})\n";
-        }
+        return $this->commentService->getCommentsByArticle($article);
     }
 
     
